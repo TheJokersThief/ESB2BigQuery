@@ -68,6 +68,7 @@ add_schedule:  ## Adds a Cloud Scheduler job to periodically run the job data co
 	gcloud scheduler jobs create pubsub --project ${PROJECT_ID} ${PROJECT_NAME} \
 		--schedule ${SCHEDULE} \
 		--topic "trigger-${PROJECT_NAME}" \
+		--location europe-west1 \
 		--message-body-from-file misc/scheduled-payload.json
 
 update_schedule:  ## Updates an existing Cloud Scheduler job
@@ -75,4 +76,4 @@ update_schedule:  ## Updates an existing Cloud Scheduler job
 		--schedule ${SCHEDULE} \
 		--topic "trigger-${PROJECT_NAME}" \
 		--message-body-from-file misc/scheduled-payload.json \
-		--location europe-west3
+		--location europe-west1
