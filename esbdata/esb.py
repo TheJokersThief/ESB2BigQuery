@@ -10,6 +10,8 @@ from typing import Dict
 from bs4 import BeautifulSoup
 from requests import Session
 
+from esbdata.util import parseDate
+
 
 DEFAULT_HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36",
@@ -35,8 +37,8 @@ class User:
 @dataclass
 class MeterData:
     # Maps: datetime string -> meter read value
-    importData: Dict[str, float] = field(default_factory=dict)
-    exportData: Dict[str, float] = field(default_factory=dict)
+    importData: Dict[datetime, float] = field(default_factory=dict)
+    exportData: Dict[datetime, float] = field(default_factory=dict)
 
 
 def login(user: User) -> Session:
@@ -89,7 +91,7 @@ def confirmLogInCSRF(s: Session, transactionID: str, csrfToken: str) -> Session:
     return s
 
 
-def fetchCSVData(user: User, startDate: datetime) -> MeterData:
+def fetchCSVData(user: User, startDate: datetime = datetime.today()) -> MeterData:
     s = login(user)
     data = s.get(
         f"{ACCOUNT_PAGE}/DataHub/DownloadHdf?mprn={user.mprn}&startDate={startDate.strftime('%Y-%m-%d')}"
@@ -101,11 +103,11 @@ def fetchCSVData(user: User, startDate: datetime) -> MeterData:
     meterData = MeterData()
     for row in reader:
         if row["Read Type"] == READ_TYPE.IMPORT.value:
-            meterData.importData[row["Read Date and End Time"]] = float(
+            meterData.importData[parseDate(row["Read Date and End Time"])] = float(
                 row["Read Value"]
             )
         elif row["Read Type"] == READ_TYPE.EXPORT.value:
-            meterData.exportData[row["Read Date and End Time"]] = float(
+            meterData.exportData[parseDate(row["Read Date and End Time"])] = float(
                 row["Read Value"]
             )
     return meterData
