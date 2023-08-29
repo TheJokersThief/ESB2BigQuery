@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "esb-data"
+version = "0.1.0"
+description = ""
+authors = []
+readme = "README.md"
+packages = [{include = "esbdata"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+requests = "^2.31.0"
+beautifulsoup4 = "^4.12.2"
+functions-framework = "^3.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
