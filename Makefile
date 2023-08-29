@@ -17,14 +17,6 @@ lint: ensure-poetry  ## Lint files for common errors and styling fixes
 	poetry check
 	poetry run flake8 --ignore F821,W504 $(project)
 
-test: ensure-poetry lint  ## Run unit tests
-	poetry run pytest tests --cov=$(project) --strict tests
-
-coverage: ensure-poetry test  ## Output coverage stats
-	poetry run coverage report -m
-	poetry run coverage html
-	@echo "coverage report: file://`pwd`/htmlcov/index.html"
-
 clean:
 	find . -name '*.pyc' -delete
 	find . -name __pycache__ -delete
