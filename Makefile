@@ -2,7 +2,7 @@
 
 PROJECT_NAME = esb2bigquery
 PROJECT_ID ?= example-project
-SCHEDULE ?= "0 8 * * FRI"
+SCHEDULE ?= "0 8 * * *"
 
 help: ## Show help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -61,6 +61,7 @@ add_schedule:  ## Adds a Cloud Scheduler job to periodically run the job data co
 		--schedule ${SCHEDULE} \
 		--topic "trigger-${PROJECT_NAME}" \
 		--location europe-west1 \
+		--time-zone "Europe/Dublin" \
 		--message-body-from-file misc/scheduled-payload.json
 
 update_schedule:  ## Updates an existing Cloud Scheduler job
@@ -68,4 +69,5 @@ update_schedule:  ## Updates an existing Cloud Scheduler job
 		--schedule ${SCHEDULE} \
 		--topic "trigger-${PROJECT_NAME}" \
 		--message-body-from-file misc/scheduled-payload.json \
+		--time-zone "Europe/Dublin" \
 		--location europe-west1
