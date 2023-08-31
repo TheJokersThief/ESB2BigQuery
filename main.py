@@ -16,7 +16,7 @@ def loadToBigQuery(cloud_event: CloudEvent) -> None:
     data = fetchCSVData(user)
     bq = BigQuery()
 
-    two_days_ago = datetime.today() - timedelta(days=1)
+    two_days_ago = datetime.today() - timedelta(days=2)
     startDate = datetime(two_days_ago.year, two_days_ago.month, two_days_ago.day, 0, 0, 0)
     endDate = datetime(two_days_ago.year, two_days_ago.month, two_days_ago.day, 23, 59, 59)
     
