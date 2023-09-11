@@ -53,8 +53,8 @@ deploy_to_gfunctions: create_pubsub_topic export_conf
 publish: deploy_to_gfunctions  ## Publish project to google cloud functions
 	@echo "Published"
 
-add_job:  ## Adds a message to the pubsub topic, using the content in misc/scheduled-payload.json
-	gcloud pubsub topics publish "projects/${PROJECT_ID}/topics/trigger-${PROJECT_NAME}" --message='$(shell cat misc/scheduled-payload.json)'
+add_job:  ## Adds a message to the pubsub topic, using the content in misc/manual-payload.json
+	gcloud pubsub topics publish "projects/${PROJECT_ID}/topics/trigger-${PROJECT_NAME}" --message='$(shell cat misc/manual-payload.json)'
 
 add_schedule:  ## Adds a Cloud Scheduler job to periodically run the job data collection
 	gcloud scheduler jobs create pubsub --project ${PROJECT_ID} ${PROJECT_NAME} \
